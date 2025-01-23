@@ -8,6 +8,7 @@
 #include "GenericTeamAgentInterface.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "WarriorGameplayTags.h"
+#include "WrriorTypes/WarriorCountdawnAction.h"
 
 #include "WarriorDebugHelper.h"
 
@@ -134,4 +135,35 @@ bool UWrriorFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(AActor* 
 	FActiveGameplayEffectHandle ActiveGameplayEffectHandle  = SourceASC->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC);
 
 	return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}
+
+void UWrriorFunctionLibrary::CountDawn(const UObject* WorldContextObject, float TotalTime, float Updateinterval, float& OutRemaningTime, EWarriorCountdawnActionInput CountDawnInput, UPARAM(DisplayName = "Output") EWarriorCountawnActionOutput& CountDawnOutput, FLatentActionInfo LatentInfo)
+{
+	UWorld* World = nullptr;
+	if (GEngine)
+	{
+		World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	}
+	if (!World)
+	{
+		return;
+	}
+	FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+	FWarriorCountdownAction* FoundAction = LatentActionManager.FindExistingAction<FWarriorCountdownAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+	if (CountDawnInput == EWarriorCountdawnActionInput::Start)
+	{
+		if (!FoundAction)
+		{
+			LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, new FWarriorCountdownAction(TotalTime, Updateinterval, OutRemaningTime, CountDawnOutput, LatentInfo));
+		}
+	}
+
+	if (CountDawnInput == EWarriorCountdawnActionInput::Cancel)
+	{
+		if (FoundAction)
+		{
+			FoundAction->CancelAction();
+		}
+	}
 }

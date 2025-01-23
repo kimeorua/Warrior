@@ -30,7 +30,7 @@ struct FWrriorHeroSpecialAbilitySet : public FWrriorHeroAbilitySet
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSoftObjectPtr<UMaterialInterface>AbilityIconMaterial;
+	TSoftObjectPtr<UMaterialInterface>SoftAbilityIconMaterial;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "Player.Cooldawn"))
 	FGameplayTag AbilityCooldownTag;

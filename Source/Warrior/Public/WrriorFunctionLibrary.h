@@ -53,4 +53,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Warrior | Function Library")
 	static bool ApplyGameplayEffectSpecHandleToTargetActor(AActor* InInstager, AActor* InTargetActor, const FGameplayEffectSpecHandle InSpecHandle);
+
+	UFUNCTION(BlueprintCallable, Category = "Warrior | Function Library", meta = (Latent, WorldContext = "WorldContextObject", LatentInfo = "LatentInfo", ExpandEnumAsExecs = "CountDawnInput|CountDawnOutput", TotalTime = "1.0", Updateinterval = "0.1"))
+	static void CountDawn(const UObject* WorldContextObject, float TotalTime, float Updateinterval, float& OutRemaningTime,
+		EWarriorCountdawnActionInput CountDawnInput, UPARAM(DisplayName = "Output") EWarriorCountawnActionOutput& CountDawnOutput, FLatentActionInfo LatentInfo);
 };
