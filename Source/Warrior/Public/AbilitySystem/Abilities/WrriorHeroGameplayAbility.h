@@ -9,6 +9,7 @@
 class AWarriorHeroCharacter;
 class AWarriorHeorController;
 class UHeroCombetComponent;
+class UHeroUIComponent;
 /**
  * 
  */
@@ -27,6 +28,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Wrroir | Ability")
 	UHeroCombetComponent* GetHeroCombetComponentFromActorInfo();
+
+	UFUNCTION(BlueprintPure, Category = "Wrroir | Ability")
+	UHeroUIComponent* GetHeroUIComponentFromActorInfo();
 
 	UFUNCTION(BlueprintPure, Category = "Wrroir | Ability")
 	FGameplayEffectSpecHandle MakeHeroDamageEffectSpecHandel(TSubclassOf<UGameplayEffect> EffectClass, float  InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InUsedComboCount);
