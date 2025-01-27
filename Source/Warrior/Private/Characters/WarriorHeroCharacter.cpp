@@ -15,6 +15,7 @@
 #include "Components/Combet/HeroCombetComponent.h"
 #include "Components/UI/HeroUIComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GameMode/WarriorBaseGameMode.h"
 
 #include "WarriorDebugHelper.h"
 
@@ -69,7 +70,32 @@ void AWarriorHeroCharacter::PossessedBy(AController* NewController)
 	{
 		if (UDataAsset_StartUpDataBase* LodedData = CharacterStartUpData.LoadSynchronous())
 		{
-			LodedData->GiveToAbilitySystemComponent(WrriorAbilitySystemComponent);
+			int32 AbilityApplyLevel = 1;
+
+			if (AWarriorBaseGameMode* BaseGamemode = GetWorld()->GetAuthGameMode<AWarriorBaseGameMode>())
+			{
+				switch (BaseGamemode->GetCurrentGameDifficulty())
+				{
+				case EWarriorGameDifficulty::Easy:
+					AbilityApplyLevel = 4;
+					break;	
+
+				case EWarriorGameDifficulty::Normal:
+					AbilityApplyLevel = 3;
+					break;
+				case EWarriorGameDifficulty::Hard:
+					AbilityApplyLevel = 2;
+					break;
+				case EWarriorGameDifficulty::VeryHard:
+					AbilityApplyLevel = 1;
+					break;
+
+				default:
+					break;
+				}
+			}
+
+			LodedData->GiveToAbilitySystemComponent(WrriorAbilitySystemComponent, AbilityApplyLevel);
 		}
 	}
 }
