@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NavigationSystem.h"
 #include "Engine/TargetPoint.h"
+#include "WrriorFunctionLibrary.h"
 
 #include "WarriorDebugHelper.h"
 
@@ -71,6 +72,19 @@ void AWarriorSurvialGameMode::Tick(float DeltaSeconds)
 				PreLoadNextWaveEnemies();
 			}
 		}
+	}
+}
+
+void AWarriorSurvialGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+
+
+	EWarriorGameDifficulty SaveGameDifficulty;
+
+	if (UWrriorFunctionLibrary::TryLoadSaveGameDifficulty(SaveGameDifficulty))
+	{
+		CurrentGameDifficulty = SaveGameDifficulty;
 	}
 }
 
